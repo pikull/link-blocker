@@ -1,10 +1,9 @@
-var textboxes = 0;
 
 document.getElementById("add").addEventListener("click",function(){
-    textboxes++;
-    
-    let input1 = document.createElement("input")
-    input1.id = "input1"+textboxes
+    let value = document.getElementById("site").value;
+    if (value == "" || value == null){return}
+    let text = document.createElement("p")
+    text.innerHTML = value;
     let div = document.createElement("div");
 
     let but = document.createElement("button");
@@ -13,10 +12,7 @@ document.getElementById("add").addEventListener("click",function(){
         div.remove()
     })
     div.className = "wrapper";
-
-    input1.type = "text";
-    input1.value = "HELLO";
-    div.appendChild(input1)
+    div.appendChild(text)
     div.appendChild(but)
     document.body.appendChild(div);
 })
