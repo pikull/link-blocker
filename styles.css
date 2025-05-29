@@ -2,3 +2,11 @@
     display:flex;
     flex-direction: row;
 }
+.body{
+    width: 400px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auth; 
+    padding:10px;
+}
