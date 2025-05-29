@@ -16,4 +16,6 @@ thanks bye!<br>
 
 ## new features to add
 
-- make a dynamic blocking list [in progress]
+- [in progress] make a dynamic blocking list
+- use chrome.storage.sync for persistent storage
+- make it look pretty
