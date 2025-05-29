@@ -1,6 +1,7 @@
 {
   "name": "Focus",
   "description": "Blocks links",
+  "author": "pikull",
   "version": "1.0.0",
   "manifest_version": 3,
   "icons": {
@@ -9,13 +10,8 @@
     "48": "images/icon-48.png",
     "128": "images/icon-128.png"
   },
-  "permissions": [
-    "declarativeNetRequest",
-    "storage"
-  ],
-  "host_permissions": [
-    "<all_urls>"
-  ],
+  "permissions": ["declarativeNetRequest", "storage"],
+  "host_permissions": ["<all_urls>"],
   "declarative_net_request": {
     "rule_resources": [
       {
