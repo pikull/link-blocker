@@ -1,4 +1,3 @@
-
 var array = [];
 
 document.getElementById("add").addEventListener("click",function(){
