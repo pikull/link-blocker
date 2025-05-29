@@ -1,12 +1,17 @@
-.wrapper{
+.wrapper {
     display:flex;
     flex-direction: row;
 }
-.body{
+.html {
+    background: #1F1B24;
+
+}
+.body {
     width: 400px;
     height: 400px;
     display: flex;
     flex-direction: column;
     margin: 0 auth; 
     padding:10px;
+    background: #1F1B24;
 }
