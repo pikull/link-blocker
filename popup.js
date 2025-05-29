@@ -1,26 +1,27 @@
-
 var array = [];
 
-document.getElementById("add").addEventListener("click",function(){
+document.getElementById("add").addEventListener("click", function() {
     let value = document.getElementById("site").value;
-    if (value == "" || value == null || array.includes(value)){return}
-    let text = document.createElement("p")
+    if (value == "" || value == null || array.includes(value)) {
+        return;
+    }
+    let text = document.createElement("p");
     text.innerHTML = value;
 
-    array.push(value)
+    array.push(value);
     let div = document.createElement("div");
 
     let but = document.createElement("button");
     but.innerHTML = "x";
-    but.addEventListener("click",function(){
-        div.remove()
-    })
+    but.addEventListener("click", function() {
+        div.remove();
+    });
     div.className = "wrapper";
-    div.appendChild(text)
-    div.appendChild(but)
+    div.appendChild(text);
+    div.appendChild(but);
     document.body.appendChild(div);
-})
+});
 
-document.getElementById("update").addEventListener("click", function(){
+document.getElementById("update").addEventListener("click", function() {
     alert(array.toString());
-})
+});
