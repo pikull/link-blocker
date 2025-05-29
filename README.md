@@ -16,5 +16,4 @@ thanks bye!<br>
 
 ## new features to add
 
-- toggle switch for enabling blocking
-- make a dynamic blocking list
+- make a dynamic blocking list [in progress]
