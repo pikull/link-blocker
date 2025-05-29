@@ -1,30 +1,25 @@
 {
-  "name": "Focus",
-  "description": "Blocks links",
+  "manifest_version": 3,
+  "name": "Link Blocker",
+  "description": "Blocks blacklisted links.",
   "author": "pikull",
   "version": "1.0.0",
-  "manifest_version": 3,
+  "permissions": ["activeTab", "storage"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "web_accessible_resources": [{
+      "resources": ["blocked.html"],
+      "matches": ["<all_urls>"]
+  }],
   "icons": {
     "16": "images/icon-16.png",
     "32": "images/icon-32.png",
     "48": "images/icon-48.png",
     "128": "images/icon-128.png"
-  },
-  "permissions": ["declarativeNetRequest", "storage"],
-  "host_permissions": ["<all_urls>"],
-  "declarative_net_request": {
-    "rule_resources": [
-      {
-        "id": "blacklist",
-        "enabled": true,
-        "path": "rules.json"
-      }
-    ]
-  },
-  "background": {
-    "service_worker": "background.js"
-  },
-  "action": {
-    "default_popup": "popup.html"
   }
 }
