@@ -1,4 +1,5 @@
-##about
+## about<br>
+
 hello world<br>
 <br>
 this is a cool little link blocker chrome ext<br>
@@ -9,11 +10,11 @@ use google to figure out how!<br>
 thanks bye!<br>
 <br>
 
-##current issues
+## current issues
 
 - none
 
-##new features to add
+## new features to add
 
 - toggle switch for enabling blocking
 - make a dynamic blocking list
