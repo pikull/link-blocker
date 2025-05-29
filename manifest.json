@@ -29,7 +29,6 @@
     "service_worker": "background.js"
   },
   "action": {
-    "default_title": "Link Blocker Active",
     "default_popup": "popup.html"
   }
 }
