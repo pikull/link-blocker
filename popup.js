@@ -1,32 +1,54 @@
-var array = [];
+let array = [];
 
-document.getElementById("add").addEventListener("click", function() {
-    let value = document.getElementById("site").value;
-    if (value == "" || value == null || array.includes(value)) {
-        return;
-    }
-    let text = document.createElement("p");
-    text.innerHTML = value;
+chrome.storage.sync.get("blockedSites", function (data) {
+    array = data.blockedSites || [];
+    array.forEach(displaySite);
+});
 
-    array.push(value);
-    let div = document.createElement("div");
+document.getElementById("add").addEventListener("click", function () {
+    const site = document.getElementById("site").value.trim();
+    if (!site || array.includes(site)) return;
 
-    let but = document.createElement("button");
-    but.innerHTML = "x";
-    but.addEventListener("click", function() {
-        let textremove = text.innerHTML;
-        let index = array.indexOf(textremove);
-        if (index > -1) {
-            array.splice(index, 1);
-        }
+    array.push(site);
+    chrome.storage.sync.set({ blockedSites: array });
+    updateRules(array);
+    displaySite(site);
+});
+
+function displaySite(site) {
+    const div = document.createElement("div");
+    div.className = "wrapper";
+    const text = document.createElement("p");
+    text.textContent = site;
+    const but = document.createElement("button");
+    but.textContent = "x";
+    but.addEventListener("click", function () {
+        array = array.filter((s) => s != site);
+        chrome.storage.sync.set({ blockedSites: array });
+        updateRules(array);
         div.remove();
     });
-    div.className = "wrapper";
     div.appendChild(text);
     div.appendChild(but);
     document.body.appendChild(div);
-});
+}
 
-document.getElementById("update").addEventListener("click", function() {
-    alert(array.toString());
-});
+function updateRules(sites) {
+    chrome.declarativeNetRequest.getDynamicRules((currentRules) => {
+        const currentIds = currentRules.map((rule) => rule.id);
+        const newRules = sites.map((site, i) => ({
+            id: i + 1,
+            priority: 1,
+            action: { type: "block" },
+            condition: {
+                urlFilter: site,
+                resourceTypes: ["main_frame"],
+            },
+        }));
+
+        chrome.declarativeNetRequest.updateDynamicRules({
+            removeRuleIds: currentIds,
+            addRules: newRules,
+        });
+    });
+}
