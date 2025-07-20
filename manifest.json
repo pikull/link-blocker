@@ -4,18 +4,7 @@
     "description": "Blocks blacklisted links.",
     "author": "pikull",
     "version": "1.0.0",
-    "permissions": [
-        "activeTab",
-        "storage",
-        "declarativeNetRequest",
-        "declarativeNetRequestWithHostAccess"
-    ],
-    "web_accessible_resources": [
-        {
-            "resources": ["blocked.html"],
-            "matches": ["<all_urls>"]
-        }
-    ],
+    "permissions": ["storage", "declarativeNetRequest"],
     "icons": {
         "16": "images/icon-16.png",
         "32": "images/icon-32.png",
@@ -24,8 +13,5 @@
     },
     "action": {
         "default_popup": "popup.html"
-    },
-    "background": {
-        "service_worker": "background.js"
     }
 }
