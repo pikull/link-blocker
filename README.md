@@ -9,13 +9,3 @@ use google to figure out how!<br>
 <br>
 thanks bye!<br>
 <br>
-
-## current issues
-
-- none
-
-## new features to add
-
-- [in progress] make a dynamic blocking list
-- use chrome.storage.sync for persistent storage
-- make it look pretty
