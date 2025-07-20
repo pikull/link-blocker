@@ -2,10 +2,10 @@
 
 hello world<br>
 <br>
-this is a cool little link blocker chrome ext<br>
-it blocks links listed in content.js<br>
+this is a cool little link blocker chrome extension<br>
+it blocks links chosen by the user using chrome api declarativeNetRequest<br>
+i made it for my cs50 final project, with the help of chatgpt and a friend<br>
 you can install it in chrome manually<br>
-use google to figure out how!<br>
 <br>
 thanks bye!<br>
 <br>
