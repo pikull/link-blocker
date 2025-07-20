@@ -9,3 +9,7 @@ you can install it in chrome manually<br>
 <br>
 thanks bye!<br>
 <br>
+
+## features to add
+
+- toggle to quickly enable/disable blocking
