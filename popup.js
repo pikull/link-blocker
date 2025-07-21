@@ -1,25 +1,7 @@
-const defaultBlockList = [
-    "facebook.com",
-    "instagram.com",
-    "twitter.com",
-    "reddit.com",
-    "youtube.com",
-    "netflix.com",
-    "tiktok.com",
-    "discord.com",
-    "snapchat.com",
-    "pinterest.com",
-    "tumblr.com",
-    "linkedin.com",
-    "amazon.com",
-    "hulu.com",
-    "twitch.tv",
-];
-
 let blockList = [];
 
 chrome.storage.sync.get("blockedSites", (data) => {
-    blockList = data.blockedSites || defaultBlockList;
+    blockList = data.blockedSites || [];
     blockList.forEach(displaySite);
     chrome.storage.sync.set({ blockedSites: blockList });
     updateRules(blockList);
