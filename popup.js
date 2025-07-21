@@ -49,7 +49,8 @@ function displaySite(site) {
     });
     div.appendChild(text);
     div.appendChild(but);
-    document.body.appendChild(div);
+    let listElement = document.getElementById("site-list");
+    listElement.insertBefore(div, listElement.firstChild);
 }
 
 function updateRules(sites) {
@@ -60,7 +61,7 @@ function updateRules(sites) {
             priority: 1,
             action: { type: "block" },
             condition: {
-                requestDomains: site,
+                requestDomains: [site],
                 resourceTypes: [
                     "csp_report",
                     "font",
