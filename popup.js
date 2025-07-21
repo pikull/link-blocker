@@ -1,4 +1,3 @@
-let blockList = [];
 const defaultBlockList = [
     "facebook.com",
     "instagram.com",
@@ -17,15 +16,20 @@ const defaultBlockList = [
     "twitch.tv",
 ];
 
-chrome.storage.sync.get("blockedSites", function(data) {
+let blockList = [];
+
+chrome.storage.sync.get("blockedSites", (data) => {
     blockList = data.blockedSites || defaultBlockList;
     blockList.forEach(displaySite);
     chrome.storage.sync.set({ blockedSites: blockList });
     updateRules(blockList);
 });
 
-document.getElementById("add").addEventListener("click", function() {
-    const site = document.getElementById("site").value.trim();
+const addButton = document.getElementById("add");
+addButton.addEventListener("click", () => {
+    const input = document.getElementById("site");
+    const site = input.value.trim();
+
     if (!site || blockList.includes(site)) return;
 
     blockList.push(site);
@@ -34,28 +38,34 @@ document.getElementById("add").addEventListener("click", function() {
     displaySite(site);
 });
 
-function displaySite(site) {
+const displaySite = (site) => {
     const div = document.createElement("div");
     div.className = "wrapper";
+
     const text = document.createElement("p");
     text.textContent = site;
-    const but = document.createElement("button");
-    but.textContent = "x";
-    but.addEventListener("click", function() {
-        blockList = blockList.filter((s) => s != site);
+
+    const removeBtn = document.createElement("button");
+    removeBtn.textContent = "x";
+
+    removeBtn.addEventListener("click", () => {
+        blockList = blockList.filter((s) => s !== site);
         chrome.storage.sync.set({ blockedSites: blockList });
         updateRules(blockList);
         div.remove();
     });
-    div.appendChild(text);
-    div.appendChild(but);
-    let listElement = document.getElementById("site-list");
-    listElement.insertBefore(div, listElement.firstChild);
-}
 
-function updateRules(sites) {
+    div.appendChild(text);
+    div.appendChild(removeBtn);
+
+    const siteList = document.getElementById("site-list");
+    siteList.insertBefore(div, siteList.firstChild);
+};
+
+const updateRules = (sites) => {
     chrome.declarativeNetRequest.getDynamicRules((currentRules) => {
         const currentIds = currentRules.map((rule) => rule.id);
+
         const newRules = sites.map((site, i) => ({
             id: i + 1,
             priority: 1,
@@ -82,16 +92,9 @@ function updateRules(sites) {
             },
         }));
 
-        chrome.declarativeNetRequest.updateDynamicRules(
-            {
-                removeRuleIds: currentIds,
-                addRules: newRules,
-            },
-            () => {
-                chrome.declarativeNetRequest.getDynamicRules((rules) => {
-                    console.log("Current dynamic rules:", rules);
-                });
-            },
-        );
+        chrome.declarativeNetRequest.updateDynamicRules({
+            removeRuleIds: currentIds,
+            addRules: newRules,
+        });
     });
-}
+};
