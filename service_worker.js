@@ -54,4 +54,5 @@ chrome.runtime.onInstalled.addListener(() => {
     };
     chrome.storage.sync.set({ blockedSites: defaultBlockList });
     updateRules(defaultBlockList);
+    chrome.storage.sync.set({ blockingEnabled: true });
 });

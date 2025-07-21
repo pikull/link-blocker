@@ -1,82 +1,109 @@
-let blockList = [];
+document.addEventListener("DOMContentLoaded", () => {
+    let blockList = [];
+    const addButton = document.getElementById("add");
+    const toggle = document.getElementById("toggle-blocking");
+    const slider = document.querySelector(".slider");
 
-chrome.storage.sync.get("blockedSites", (data) => {
-    blockList = data.blockedSites || [];
-    blockList.forEach(displaySite);
-    chrome.storage.sync.set({ blockedSites: blockList });
-    updateRules(blockList);
-});
+    chrome.storage.sync.get(["blockedSites", "blockingEnabled"], (data) => {
+        blockList = data.blockedSites || [];
+        blockList.forEach(displaySite);
 
-const addButton = document.getElementById("add");
-addButton.addEventListener("click", () => {
-    const input = document.getElementById("site");
-    const site = input.value.trim();
+        const isEnabled = data.blockingEnabled ?? true;
+        slider.classList.add("no-transition");
+        toggle.checked = isEnabled;
+        slider.offsetHeight;
+        slider.classList.remove("no-transition");
 
-    if (!site || blockList.includes(site)) return;
+        if (isEnabled) updateRules(blockList);
+        chrome.storage.sync.set({ blockedSites: blockList, blockingEnabled: isEnabled });
+    });
 
-    blockList.push(site);
-    chrome.storage.sync.set({ blockedSites: blockList });
-    updateRules(blockList);
-    displaySite(site);
-});
+    addButton.addEventListener("click", () => {
+        const input = document.getElementById("site");
+        const site = input.value.trim();
 
-const displaySite = (site) => {
-    const div = document.createElement("div");
-    div.className = "wrapper";
+        if (!site || blockList.includes(site)) return;
 
-    const text = document.createElement("p");
-    text.textContent = site;
-
-    const removeBtn = document.createElement("button");
-    removeBtn.textContent = "x";
-
-    removeBtn.addEventListener("click", () => {
-        blockList = blockList.filter((s) => s !== site);
+        blockList.push(site);
         chrome.storage.sync.set({ blockedSites: blockList });
         updateRules(blockList);
-        div.remove();
+        displaySite(site);
     });
 
-    div.appendChild(text);
-    div.appendChild(removeBtn);
+    toggle.addEventListener("change", () => {
+        const isEnabled = toggle.checked;
+        chrome.storage.sync.set({ blockingEnabled: isEnabled });
 
-    const siteList = document.getElementById("site-list");
-    siteList.insertBefore(div, siteList.firstChild);
-};
+        if (isEnabled) updateRules(blockList);
+        else {
+            chrome.declarativeNetRequest.getDynamicRules((rules) => {
+                const currentIds = rules.map((rule) => rule.id);
+                chrome.declarativeNetRequest.updateDynamicRules({
+                    removeRuleIds: currentIds,
+                    addRules: [],
+                });
+            });
+        }
+    });
 
-const updateRules = (sites) => {
-    chrome.declarativeNetRequest.getDynamicRules((currentRules) => {
-        const currentIds = currentRules.map((rule) => rule.id);
+    const displaySite = (site) => {
+        const div = document.createElement("div");
+        div.className = "wrapper";
 
-        const newRules = sites.map((site, i) => ({
-            id: i + 1,
-            priority: 1,
-            action: { type: "block" },
-            condition: {
-                requestDomains: [site],
-                resourceTypes: [
-                    "csp_report",
-                    "font",
-                    "image",
-                    "main_frame",
-                    "media",
-                    "object",
-                    "other",
-                    "ping",
-                    "script",
-                    "stylesheet",
-                    "sub_frame",
-                    "webbundle",
-                    "websocket",
-                    "webtransport",
-                    "xmlhttprequest",
-                ],
-            },
-        }));
+        const text = document.createElement("p");
+        text.textContent = site;
 
-        chrome.declarativeNetRequest.updateDynamicRules({
-            removeRuleIds: currentIds,
-            addRules: newRules,
+        const removeBtn = document.createElement("button");
+        removeBtn.textContent = "x";
+
+        removeBtn.addEventListener("click", () => {
+            blockList = blockList.filter((s) => s !== site);
+            chrome.storage.sync.set({ blockedSites: blockList });
+            updateRules(blockList);
+            div.remove();
         });
-    });
-};
+
+        div.appendChild(text);
+        div.appendChild(removeBtn);
+
+        const siteList = document.getElementById("site-list");
+        siteList.insertBefore(div, siteList.firstChild);
+    };
+
+    const updateRules = (sites) => {
+        chrome.declarativeNetRequest.getDynamicRules((currentRules) => {
+            const currentIds = currentRules.map((rule) => rule.id);
+
+            const newRules = sites.map((site, i) => ({
+                id: i + 1,
+                priority: 1,
+                action: { type: "block" },
+                condition: {
+                    requestDomains: [site],
+                    resourceTypes: [
+                        "csp_report",
+                        "font",
+                        "image",
+                        "main_frame",
+                        "media",
+                        "object",
+                        "other",
+                        "ping",
+                        "script",
+                        "stylesheet",
+                        "sub_frame",
+                        "webbundle",
+                        "websocket",
+                        "webtransport",
+                        "xmlhttprequest",
+                    ],
+                },
+            }));
+
+            chrome.declarativeNetRequest.updateDynamicRules({
+                removeRuleIds: currentIds,
+                addRules: newRules,
+            });
+        });
+    };
+});
