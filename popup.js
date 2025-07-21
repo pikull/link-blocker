@@ -1,3 +1,8 @@
+/* credit
+ * the creation of this file
+ * was assisted by ChatGPT
+ */
+
 document.addEventListener("DOMContentLoaded", () => {
     let blockList = [];
     const addButton = document.getElementById("add");
@@ -15,7 +20,10 @@ document.addEventListener("DOMContentLoaded", () => {
         slider.classList.remove("no-transition");
 
         if (isEnabled) updateRules(blockList);
-        chrome.storage.sync.set({ blockedSites: blockList, blockingEnabled: isEnabled });
+        chrome.storage.sync.set({
+            blockedSites: blockList,
+            blockingEnabled: isEnabled,
+        });
     });
 
     addButton.addEventListener("click", () => {

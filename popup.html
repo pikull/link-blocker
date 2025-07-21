@@ -1,26 +1,33 @@
+<!-- credit --------------------->
+<!-- the creation of this file -->
+<!-- was assisted by ChatGPT ---->
+<!------------------------------->
+
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="popup.css" />
-        <script src="popup.js"></script>
-        <title>Link Blocker</title>
-    </head>
 
-    <body class="body">
-        <h2>Link Blocker</h2>
-        <div class="toggle">
-            <span>Toggle Blocking</span>
-            <label class="switch">
-                <input type="checkbox" class="no-transition" id="toggle-blocking" checked />
-                <span class="slider"></span>
-            </label>
-        </div>
-        <div class="input-group">
-            <input type="text" placeholder="Enter site to block" id="site" />
-            <button type="submit" id="add">Add</button>
-        </div>
-        <div id="site-list"></div>
-    </body>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="popup.css" />
+    <script src="popup.js"></script>
+    <title>Link Blocker</title>
+</head>
+
+<body class="body">
+    <h2>Link Blocker</h2>
+    <div class="toggle">
+        <span>Toggle Blocking</span>
+        <label class="switch">
+            <input type="checkbox" class="no-transition" id="toggle-blocking" checked />
+            <span class="slider"></span>
+        </label>
+    </div>
+    <div class="input-group">
+        <input type="text" placeholder="Enter site to block" id="site" />
+        <button type="submit" id="add">Add</button>
+    </div>
+    <div id="site-list"></div>
+</body>
+
 </html>

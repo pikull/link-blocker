@@ -1,3 +1,8 @@
+/* credit
+ * the creation of this file
+ * was assisted by ChatGPT
+ */
+
 chrome.runtime.onInstalled.addListener(() => {
     const defaultBlockList = [
         "facebook.com",
