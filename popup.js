@@ -1,17 +1,34 @@
-let array = [];
+const defaultBlockList = [
+    "facebook.com",
+    "instagram.com",
+    "twitter.com",
+    "reddit.com",
+    "youtube.com",
+    "netflix.com",
+    "tiktok.com",
+    "discord.com",
+    "snapchat.com",
+    "pinterest.com",
+    "tumblr.com",
+    "linkedin.com",
+    "amazon.com",
+    "hulu.com",
+    "twitch.tv",
+];
+let blockList = [];
 
-chrome.storage.sync.get("blockedSites", function (data) {
-    array = data.blockedSites || [];
-    array.forEach(displaySite);
+chrome.storage.sync.get("blockedSites", function(data) {
+    blockList = data.blockedSites || defaultBlockList;
+    blockList.forEach(displaySite);
 });
 
-document.getElementById("add").addEventListener("click", function () {
+document.getElementById("add").addEventListener("click", function() {
     const site = document.getElementById("site").value.trim();
-    if (!site || array.includes(site)) return;
+    if (!site || blockList.includes(site)) return;
 
-    array.push(site);
-    chrome.storage.sync.set({ blockedSites: array });
-    updateRules(array);
+    blockList.push(site);
+    chrome.storage.sync.set({ blockedSites: blockList });
+    updateRules(blockList);
     displaySite(site);
 });
 
@@ -22,10 +39,10 @@ function displaySite(site) {
     text.textContent = site;
     const but = document.createElement("button");
     but.textContent = "x";
-    but.addEventListener("click", function () {
-        array = array.filter((s) => s != site);
-        chrome.storage.sync.set({ blockedSites: array });
-        updateRules(array);
+    but.addEventListener("click", function() {
+        blockList = blockList.filter((s) => s != site);
+        chrome.storage.sync.set({ blockedSites: blockList });
+        updateRules(blockList);
         div.remove();
     });
     div.appendChild(text);
@@ -41,8 +58,8 @@ function updateRules(sites) {
             priority: 1,
             action: { type: "block" },
             condition: {
-                urlFilter: site,
-                resourceTypes: ["main_frame"],
+                urlFilter: "||" + site + "/",
+                resourceTypes: ["main_frame", "sub_frame"],
             },
         }));
 
