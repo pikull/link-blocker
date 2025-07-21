@@ -108,8 +108,9 @@ button:hover {
     height: 0;
 }
 
-.no-transition {
-    transition: none !important;
+.transition.slider,
+.transition.slider:before {
+    transition: background-color 0.4s ease;
 }
 
 .slider {
@@ -121,7 +122,7 @@ button:hover {
     left: 0;
     right: 0;
     bottom: 0;
-    transition: background-color 0.4s ease;
+    /* transition: background-color 0.4s ease; */
 }
 
 .slider:before {
@@ -133,7 +134,7 @@ button:hover {
     bottom: 2px;
     background-color: white;
     border-radius: 50%;
-    transition: transform 0.4s ease;
+    /* transition: transform 0.4s ease; */
 }
 
 input:checked+.slider {

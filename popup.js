@@ -14,10 +14,9 @@ document.addEventListener("DOMContentLoaded", () => {
         blockList.forEach(displaySite);
 
         const isEnabled = data.blockingEnabled ?? true;
-        slider.classList.add("no-transition");
         toggle.checked = isEnabled;
         slider.offsetHeight;
-        slider.classList.remove("no-transition");
+        slider.classList.add("transition");
 
         if (isEnabled) updateRules(blockList);
         chrome.storage.sync.set({
