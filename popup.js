@@ -1,3 +1,4 @@
+let blockList = [];
 const defaultBlockList = [
     "facebook.com",
     "instagram.com",
@@ -15,11 +16,12 @@ const defaultBlockList = [
     "hulu.com",
     "twitch.tv",
 ];
-let blockList = [];
 
 chrome.storage.sync.get("blockedSites", function(data) {
     blockList = data.blockedSites || defaultBlockList;
     blockList.forEach(displaySite);
+    chrome.storage.sync.set({ blockedSites: blockList });
+    updateRules(blockList);
 });
 
 document.getElementById("add").addEventListener("click", function() {
@@ -58,14 +60,37 @@ function updateRules(sites) {
             priority: 1,
             action: { type: "block" },
             condition: {
-                urlFilter: "||" + site + "/",
-                resourceTypes: ["main_frame", "sub_frame"],
+                requestDomains: site,
+                resourceTypes: [
+                    "csp_report",
+                    "font",
+                    "image",
+                    "main_frame",
+                    "media",
+                    "object",
+                    "other",
+                    "ping",
+                    "script",
+                    "stylesheet",
+                    "sub_frame",
+                    "webbundle",
+                    "websocket",
+                    "webtransport",
+                    "xmlhttprequest",
+                ],
             },
         }));
 
-        chrome.declarativeNetRequest.updateDynamicRules({
-            removeRuleIds: currentIds,
-            addRules: newRules,
-        });
+        chrome.declarativeNetRequest.updateDynamicRules(
+            {
+                removeRuleIds: currentIds,
+                addRules: newRules,
+            },
+            () => {
+                chrome.declarativeNetRequest.getDynamicRules((rules) => {
+                    console.log("Current dynamic rules:", rules);
+                });
+            },
+        );
     });
 }
