@@ -28,12 +28,15 @@ document.addEventListener("DOMContentLoaded", () => {
     addButton.addEventListener("click", () => {
         const input = document.getElementById("site");
         const site = input.value.trim();
+        const isEnabled = toggle.checked;
 
         if (!site || blockList.includes(site)) return;
 
         blockList.push(site);
         chrome.storage.sync.set({ blockedSites: blockList });
-        updateRules(blockList);
+        if (isEnabled) {
+            updateRules(blockList);
+        }
         displaySite(site);
     });
 
